@@ -1,0 +1,152 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:local="clr-namespace:DesktopGoogleReader"
+                    xmlns:apicontracts="clr-namespace:GoogleReaderAPI.DataContracts;assembly=GoogleReaderAPI"
+                    x:Class="DataBd">
+    <local:FeedItemSummarySourceConverter x:Key="SummarySourceConverter" />
+    <local:FeedTitleConverter x:Key="FeedTitleConverter" />
+    <local:FeedItemPublishConverter x:Key="FeedItemPublishConverter" />
+
+    <Storyboard x:Key="FadeAway">
+        <DoubleAnimation  Name="ButtonFadeAwayAnimation"
+                                            Storyboard.TargetName="SetAsReadButtonImage"
+                                            Storyboard.TargetProperty="(Opacity)"
+                                            From="1" To="0.0" Duration="0:0:1" 
+                                            AutoReverse="False" RepeatBehavior="1x" 
+                                         />
+    </Storyboard>
+
+    <Storyboard x:Key="FadeIn">
+        <DoubleAnimation  Name="ButtonFadeInAnimation"
+                                            Storyboard.TargetName="SetAsReadButtonImage"
+                                            Storyboard.TargetProperty="(Opacity)"
+                                            From="0" To="1" Duration="0:0:1" 
+                                            AutoReverse="False" RepeatBehavior="1x" 
+                                         />
+    </Storyboard>
+
+    <DataTemplate DataType="{x:Type apicontracts:UnreadFeed}">
+        <Border   Margin="0" BorderThickness="1" BorderBrush="{StaticResource SolidBorderBrush}" CornerRadius="2" HorizontalAlignment="Stretch" x:Name="UnreadFeedView">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="#eee" />
+                        <GradientStop Offset="1" Color="#ccc" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid Margin="1" HorizontalAlignment="Stretch"
+                  >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="FavIcon" Grid.Column="0" Width="18" Source="{Binding Path=FavIcon}" />
+                <!-- <Image x:Name="FavIcon" Grid.Column="0" Width="18" Source="pack://application:,,,/Resources/images/feed.png" /> -->
+
+                <Button Grid.Column="2" Margin="0,0,0,0" 
+                        Name="SetAsReadButton" 
+                        VerticalAlignment="Center" 
+                        Command="local:ReaderCommands.SetFeedAsRead" 
+                        CommandParameter="{Binding}" 
+                        ToolTip="Mark all items in feed read"
+                        BorderBrush="Transparent" 
+                        BorderThickness="0" 
+                        Background="Transparent" 
+                        Opacity="1" 
+                        Foreground="Transparent" 
+                        >
+                    <Image Source="pack://application:,,,/Resources/images/cancel.png" 
+                           Width="15" 
+                           Height="15"
+                           Name="SetAsReadButtonImage"
+                           />
+                </Button>
+                <TextBlock Name="feedTitle" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path=MySelf, Converter={StaticResource FeedTitleConverter}}" 
+                           Margin="0,2,2,0" HorizontalAlignment="Stretch"></TextBlock>
+
+            </Grid>
+        </Border>
+
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                <Setter TargetName="feedTitle" Property="FontStyle" Value="Italic"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                <Setter TargetName="UnreadFeedView" Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="LightYellow" />
+                                <GradientStop Offset="1" Color="Yellow" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+
+
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type apicontracts:UnreadItem}">
+        <Border Margin="0" Padding="2" BorderThickness="1" BorderBrush="{StaticResource SolidBorderBrush}" CornerRadius="2" HorizontalAlignment="Stretch"
+                x:Name="UnreadItemView" >
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="#eee" />
+                        <GradientStop Offset="1" Color="#ccc" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Grid Margin="0" HorizontalAlignment="Stretch" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <local:UnreadItemStarButton Margin="0,0,5,0" MinWidth="20" Grid.Column="0" ToolTip="Starr this item"
+                AsyncCheckAction="{Binding Path=StarAction, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                AsyncUnCheckAction="{Binding Path=UnStarAction, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                ActionTarget="{Binding}" IsChecked="{Binding Path=Starred}" />
+
+                <TextBlock Name="itemTitle" Grid.Column="1" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path=Title}" 
+                       Margin="0,0,3,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
+                <TextBlock Name="itemPublished" Grid.Column="2" FontWeight="Bold" TextWrapping="Wrap"  Text="{Binding Path=HumanReadablePublished}"
+                       Margin="0,0,3,0" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBlock>
+            </Grid>
+        </Border>
+
+        <DataTemplate.Triggers>
+           <!-- <DataTrigger Binding="{Binding Path=alreadySeenByUser}" Value="true">
+                <Setter TargetName="itemTitle" Property="FontWeight" Value="Normal"/>
+            </DataTrigger> -->
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                <Setter TargetName="itemTitle" Property="FontStyle" Value="Italic"/> 
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                <Setter TargetName="UnreadItemView" Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="LightYellow" />
+                                <GradientStop Offset="1" Color="Yellow" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="itemTitle" Property="FontWeight" Value="Normal"/>
+            </DataTrigger>
+          <!--  <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="SetAsReadButtonImage">
+                <BeginStoryboard Storyboard="{DynamicResource ButtonFadeInAnimation}"/>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="SetAsReadButtonImage">
+                <BeginStoryboard Storyboard="{DynamicResource ButtonFadeAwayAnimation}"/>
+            </EventTrigger> -->
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

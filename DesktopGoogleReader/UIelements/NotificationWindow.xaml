@@ -1,0 +1,42 @@
+﻿<local:NotificationWindowBase x:Class="DesktopGoogleReader.NotificationWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:DesktopGoogleReader" 
+    Background="Transparent"
+    Height="120" Width="300">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Offset="0" Color="#eee" />
+                    <GradientStop Offset="1" Color="#ccc" />
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Border CornerRadius="5" BorderThickness="2" BorderBrush="{StaticResource SolidBorderBrush}">
+            <Grid ShowGridLines="False" Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid ShowGridLines="False" Background="{StaticResource SolidBorderBrush}" 
+                      Grid.ColumnSpan="2" Margin="0,0,0,3"></Grid>
+                
+                <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+                    <TextBlock Margin="5,2,5,2" Text="{Binding Path=Title}" TextWrapping="Wrap" FontWeight="Bold" />
+                    <TextBlock Margin="5,2,5,2" Text="{Binding Path=ParentFeedTitle}" TextWrapping="Wrap" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                    <Button Style="{StaticResource SmallCloseButton}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="2" Click="CloseButton_Click" />
+                    <Button Style="{StaticResource SmallGoButton}" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="2" Click="GoButton_Click" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</local:NotificationWindowBase>

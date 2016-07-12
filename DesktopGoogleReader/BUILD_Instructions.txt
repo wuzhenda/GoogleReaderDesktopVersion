@@ -1,0 +1,7 @@
+﻿Compiling
+For compiling and running be sure to have the Visual C++ 2008 Redistributables SP1 http://www.microsoft.com/downloads/details.aspx?familyid=2051a0c1-c9b5-4b0a-a8f5-770a549fd78c&displaylang=en installed on your machine as Webkit will crash without it
+Desktop Google Reader only runs when being compiled in in x86 (32Bit) because of Webkit only being available for 32 Bit.
+
+Create Setup
+To create the setup installation file compile the solution as x86. Then navigate into the folder "bin\x86\Debug\Setup" or "bin\x86\Release\Setup" depending on you compilation settings. Open the file setup.nsi using the nullsoft scriptable install system (NSIS) which can be found at http://nsis.sourceforge.net/Main_Page
+NSIS then automatically creates the file Setup-DesktopGoogleReader.exe which is a fully automated installer which also includes the needed setup for the mentioned redistributables.

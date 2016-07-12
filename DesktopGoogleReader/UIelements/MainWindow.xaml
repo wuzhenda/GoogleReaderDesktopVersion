@@ -1,0 +1,374 @@
+﻿<Window x:Class="DesktopGoogleReader.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Reader" Width="1024" Height="700" Closed="Window_Closed"
+        Icon="../Resources/images/feed.png"
+        Background="LightGray" WindowStyle="None"  BorderBrush="LightGray" AllowsTransparency="False" Foreground="Black"
+        StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
+                xmlns:WinForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        >    
+    <DockPanel LastChildFill="True">
+
+
+            <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" Height="22">
+                <StatusBar.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="#eee" />
+                            <GradientStop Offset="1" Color="#ccc" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </StatusBar.Background>    
+                    <ProgressBar Margin="0" IsIndeterminate="True" Name="currentProgress" HorizontalAlignment="Left" Width="80" Height="14" VerticalAlignment="Center">
+                        <ProgressBar.Triggers>
+                            <EventTrigger RoutedEvent="ProgressBar.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="currentProgress" 
+                                            Storyboard.TargetProperty="Value"
+                                            From="0" To="100" Duration="0:0:1" 
+                                            RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ProgressBar.Triggers>
+
+
+                    </ProgressBar>
+                    <Label Height="22" Name="labelCurrentAction" Background="Transparent" Padding="0">Starting up...</Label>
+                
+
+
+        </StatusBar>
+     
+        <Grid Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="200" Width="250"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition MinWidth="350"></ColumnDefinition>
+                
+            </Grid.ColumnDefinitions>
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    
+                </Grid.RowDefinitions>
+                <Border          Name="CurrentViewTitle"         Grid.Row="0"         BorderBrush="{StaticResource SolidBorderBrush}"                
+                                 BorderThickness="1"                CornerRadius="2">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="#eee" />
+                            <GradientStop Offset="1" Color="#ccc" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <TextBlock Name="nameOfCurrentView" MouseMove="Header_MouseMove" MouseDown="HeaderMouseClick" FontWeight="Bold" TextWrapping="Wrap" Text="All unread" 
+                       Margin="0,0,0,0" Padding="5"  VerticalAlignment="Center" FontSize="18" Foreground="Black"></TextBlock>
+            </Border>
+
+                <ToolBar Grid.Row="1" DockPanel.Dock="Bottom" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" ClipToBounds="False" SnapsToDevicePixels="False">
+                    <ToolBar.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </ToolBar.Background>
+                    
+                    <Button Click="buttonRefeshFeeds_Clicked"
+                       Name="buttonRefreshAllFeeds" ToolTip="Refresh all feeds" BorderThickness="0">
+                        <Image Source="pack://application:,,,/Resources/images/refresh.png" Width="18" Height="18" ToolTip="Refresh all feeds" />
+                    </Button>
+                    <Button  Click="buttonMarkAllFeedsRead_Clicked"
+                       Name="buttonmarkAllFeedsRead" ToolTip="Mark all feeds as read" BorderThickness="0">
+                        <Image Source="pack://application:,,,/Resources/images/cancel.png" Width="18" Height="18" ToolTip="Mark all feeds read" />
+                    </Button>
+                    <Button Click="buttomSubscribeNewFeed_Clicked"
+                       Name="buttomSubscribeNewFeed" ToolTip="Subscribe to a new feed" BorderThickness="0">
+                        <Image Source="pack://application:,,,/Resources/images/add.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button Click="buttomUnsubscribeFeed_Clicked"
+                       Name="buttomUnsubscribeFeed" ToolTip="Unsubscribe from currently selected feed" BorderThickness="0">
+                        <Image Source="pack://application:,,,/Resources/images/remove.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button Click="buttonPreferences_Clicked"
+                       Name="buttonPreferences" ToolTip="Preferences" BorderThickness="0">
+                        <Image Source="pack://application:,,,/Resources/images/preferences.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button Click="buttonHelp_Clicked"
+                       Name="buttoHelpAbout" ToolTip="About">
+                        <Image Source="pack://application:,,,/Resources/images/helpAbout.png" Width="18" Height="18" ToolTip="About" />
+                    </Button>
+
+                </ToolBar>
+
+
+                <ListBox 
+                    Grid.Row="2" 
+                    Name="lstFeeds" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" 
+                    IsSynchronizedWithCurrentItem="True"
+                    Background="LightGray"
+                    >
+                </ListBox>
+            </Grid>
+            <GridSplitter Grid.Column="1" MinWidth="5" VerticalAlignment="Stretch" HorizontalAlignment="Center" IsTabStop="False" Background="LightGray"></GridSplitter>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" MinHeight="36"></RowDefinition>
+                    <RowDefinition MinHeight="70" Height="150"></RowDefinition>
+                    <RowDefinition Height="Auto" MinHeight="5"></RowDefinition>
+                    <RowDefinition Height="Auto" MinHeight="36"></RowDefinition>
+                    <RowDefinition Height="Auto" MinHeight="28"></RowDefinition>
+                    <RowDefinition Height="*" MinHeight="100"></RowDefinition> 
+                </Grid.RowDefinitions>
+
+
+
+                <Border          
+                    Name="BorderFeedTitle"
+                    BorderBrush="{StaticResource SolidBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="2"
+                    Grid.Row="0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <TextBlock MouseMove="Header_MouseMove" MouseDown="HeaderMouseClick" Name="feedTitle" FontWeight="Bold" TextWrapping="Wrap" Text="{Binding ElementName=lstItems, Path=SelectedItem.ParentFeedTitle, Mode=OneWay}" 
+                       Margin="0,0,0,0" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="18" Foreground="Black"></TextBlock>
+                </Border>
+
+
+                <ListBox Name="lstItems" SelectionMode="Extended" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                         DataContext="{Binding ElementName=lstFeeds, Path=SelectedItem}" Grid.Row="1" Background="LightGray"
+                         ItemsSource="{Binding Path=Items}" SelectionChanged="OnSelectedItemChanged" IsSynchronizedWithCurrentItem="True"></ListBox>
+
+                <GridSplitter Grid.Row="2" MinHeight="5" ResizeDirection="Rows" VerticalAlignment="Center" 
+                              IsTabStop="False" HorizontalAlignment="Stretch" Background="LightGray"></GridSplitter>
+
+                <Border          Name="BorderItemTitle"                   BorderBrush="{StaticResource SolidBorderBrush}"                
+                                 BorderThickness="1"                CornerRadius="2" Grid.Row="3">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <TextBlock Name="itemTitle" FontWeight="Bold" Text="{Binding ElementName=lstItems, Path=SelectedItem.Title, Mode=OneWay}" TextWrapping="NoWrap"
+                       Margin="0,0,0,0" Padding="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="18" Foreground="Black" ToolTip="Click to open linked item in own browser window"></TextBlock>
+                 </Border>
+
+                <ToolBarTray Grid.Row="4" Background="#ddd">
+                    <ToolBar DockPanel.Dock="top" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" ToolBar.OverflowMode="Never">
+                        <ToolBar.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#eee" />
+                                    <GradientStop Offset="1" Color="#ccc" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </ToolBar.Background>
+
+                        <!-- item actions start -->
+
+                        <Button  Click="buttonMarkItemRead_Clicked"
+                       Name="buttonmarkMarkThisItemRead" ToolTip="Mark selected item(s) as read">
+                            <Image Source="pack://application:,,,/Resources/images/cancel.png" Width="18" Height="18" ToolTip="Mark this item as read" />
+                        </Button>
+
+                        <Button Name="ShowFullPageButton" VerticalAlignment="Center" Click="ShowFullPageButton_Click"        
+                    ToolTip="View full article">
+                            <Image Source="pack://application:,,,/Resources/images/viewFullPage.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="GoToSourceButton" VerticalAlignment="Center" Click="buttonOnGoToSource_Clicked"        
+                    ToolTip="View full article in your default browser (Tab)">
+                            <Image Source="pack://application:,,,/Resources/images/upload.png" Width="18" Height="18" />
+                        </Button>
+
+                    </ToolBar>
+                    <ToolBar DockPanel.Dock="top" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" ToolBar.OverflowMode="Never">
+                        <ToolBar.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#eee" />
+                                    <GradientStop Offset="1" Color="#ccc" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </ToolBar.Background>
+
+                        <!-- item actions end -->
+                    
+                    
+                    
+                    <!-- item addtional data start -->
+
+                    <Button Name="ButtonLikedStated" VerticalAlignment="Center"        
+                        ToolTip="Item liked by 0 persons" Click="OnSetLiked">
+                        <Image  Name="LikedState" Source="pack://application:,,,/Resources/images/heartGrey.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button Click="OnSetAsShared" Name="ShareButton" VerticalAlignment="Center" 
+                     ToolTip="Share item">
+                        <Image Name="ShareIcon"  Source="pack://application:,,,/Resources/images/notShared.png" Width="18" Height="18"  />
+                    </Button>
+
+                    <Button  Name="ButtonEditTags" VerticalAlignment="Center"        
+                        ToolTip="Add tags" Click="OnEditTags">
+                        <Image Name="Tags" Source="pack://application:,,,/Resources/images/tags.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button  Name="ButtonMail" VerticalAlignment="Center"        
+                        ToolTip="Send article via email" Click="OnMailSend">
+                        <Image Name="Mail" Source="pack://application:,,,/Resources/images/mail.png" Width="18" Height="18" />
+                    </Button>
+                    
+                    <Button Name="ShowAttachmentButton" VerticalAlignment="Center"             
+                    CommandParameter="{Binding}" ToolTip="Item has attachment" Visibility="Hidden">
+                        <Image Source="pack://application:,,,/Resources/images/attachment.png" Width="18" Height="18" Visibility="Collapsed" />
+                    </Button>
+                    
+                    </ToolBar>
+                    <ToolBar DockPanel.Dock="top" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" ToolBar.OverflowMode="Never">
+                        <ToolBar.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#eee" />
+                                    <GradientStop Offset="1" Color="#ccc" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </ToolBar.Background>
+
+                        <Button Name="ReadItLaterButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to your Read It Later list"
+                            Click="OnReadItLater">
+                            <Image Source="pack://application:,,,/Resources/images/readItLater.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="InstapaperButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to your Instapaper list"
+                            Click="InstapaperButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/instapaper.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="TweetItButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Tweet it"
+                            Click="TweetItButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/twitter.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="DeliciousButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to del.icio.us"
+                            Click="DeliciousButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/delicious.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="FacebookButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to Facebook"
+                            Click="FacebookButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/facebook.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="PosterousButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to Posterous"
+                            Click="PosterousButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/posterous.png" Width="18" Height="18" />
+                        </Button>
+
+                        <Button Name="DiigoButton" 
+                            VerticalAlignment="Center"             
+                            ToolTip="Add to Diigo"
+                            Click="DiigoButton_Click">
+                            <Image Source="pack://application:,,,/Resources/images/Diigo.png" Width="18" Height="18" />
+                        </Button>
+
+                        <!-- item addtional data end -->
+
+                    </ToolBar>
+                    <ToolBar DockPanel.Dock="top" VerticalAlignment="Stretch" HorizontalContentAlignment="Left" ToolBar.OverflowMode="Never">
+                        <ToolBar.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#eee" />
+                                    <GradientStop Offset="1" Color="#ccc" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </ToolBar.Background>
+
+
+                        <!-- Browser control start -->
+                    
+                    
+                    
+                    <Button Name="BrowserBackButton" VerticalAlignment="Center"             
+                    ToolTip="Back in browser history" Click="buttonBrowserBack_Clicked">
+                        <Image Source="pack://application:,,,/Resources/images/arrow_left.png" Width="18" Height="18" />
+                    </Button>
+
+                    <Button Name="BrowserForwardButton" VerticalAlignment="Center"             
+                    ToolTip="Forward in browser history" Click="buttonBrowserForward_Clicked">
+                        <Image Source="pack://application:,,,/Resources/images/arrow_right.png" Width="18" Height="18" />
+                    </Button>
+
+                    <TextBox Width="150" Name="labelCurrentItemUrl"  Background="White" Padding="2" BorderThickness="1" Text="" KeyDown="KeyPressedInUrlBox" HorizontalAlignment="Left" VerticalContentAlignment="Center"></TextBox>
+                    
+                    <!-- Browser control end -->
+                   
+                </ToolBar>
+</ToolBarTray>
+                <Border 
+                Name="BorderBrowser" 
+                Background="{StaticResource WindowBackgroundBrush}"
+                BorderBrush="{StaticResource SolidBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="2" Grid.Row="6"
+                HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch">
+                    <Grid Name="WebkitBrowserGrid" />
+                </Border>
+
+
+
+                <Button Height="20" HorizontalAlignment="Right" Name="buttonMinimizeWindow" VerticalAlignment="Top" Click="buttonMinimizeMe_Click" Width="20" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" Opacity="1" Foreground="Transparent" Margin="0,0,40,0" Padding="0">
+                    <Image Source="pack://application:,,,/Resources/images/minimize.png" Width="14" Height="14" ToolTip="Minimize window" />
+                </Button>
+
+                <Button Height="20" HorizontalAlignment="Right" Name="buttonMaximizeWindow" VerticalAlignment="Top" Click="buttonMaximizeMe_Click" Width="20" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" Opacity="1" Foreground="Transparent" Margin="0,0,20,0" Padding="0">
+                    <Image Source="pack://application:,,,/Resources/images/maximize.png" Width="14" Height="14" ToolTip="Maximize window" />
+                </Button>
+
+                <Button Height="20" HorizontalAlignment="Right" Name="buttonCloseWindow" VerticalAlignment="Top" Click="buttonCloseMe_Click" Width="20" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" Opacity="1" Foreground="Transparent" Padding="0">
+                    <Image Source="pack://application:,,,/Resources/images/exit.png" Width="14" Height="14" ToolTip="Exit Desktop Google Reader" />
+                </Button>
+
+            </Grid>    
+        </Grid>
+    </DockPanel>
+</Window>

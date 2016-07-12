@@ -1,0 +1,53 @@
+﻿<Window x:Class="DesktopGoogleReader.UIelements.useSnarlPopups"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Try out Snarl" Height="281" Width="354" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen" Icon="/DesktopGoogleReader;component/Resources/images/snarl.png">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="#eee" />
+                <GradientStop Offset="1" Color="#ccc" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <RichTextBox  Margin="8,8,8,50" Name="richTextBox1" >
+            <FlowDocument>
+                <Paragraph>
+                    Desktop Google Reader has detected that you do not have the notification system Snarl running at the moment.
+                </Paragraph>
+                <Paragraph>
+                    While Desktop Google Reader doesn't need Snarl necessarily to work we strongly suggest you to give it a try as you will get many more possibilities for notifications and their look and feel.
+                </Paragraph>
+                <Paragraph>
+                    You can get Snarl on it's homepage http://www.fullphat.net/
+                </Paragraph>
+                <Paragraph>
+                    This information is only shown on first start of Desktop Google Reader - thanks for reading
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button Height="23" Margin="0,0,12,13" Name="buttonShowSnarlHomepage" VerticalAlignment="Bottom" Click="buttonShowSnarlHomepage_Click" HorizontalAlignment="Right" Width="158">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="White" />
+                        <GradientStop Offset="1" Color="#eee" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Button.Background>
+            Show Snarl homepage
+        </Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="12,0,0,13" Name="buttonDismiss" VerticalAlignment="Bottom" Width="120" Click="buttonDismiss_Click">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="White" />
+                        <GradientStop Offset="1" Color="#eee" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Button.Background>
+            Dismiss
+        </Button>
+    </Grid>
+</Window>

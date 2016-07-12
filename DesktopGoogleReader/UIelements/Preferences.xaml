@@ -1,0 +1,178 @@
+﻿<Window x:Class="DesktopGoogleReader.UIelements.Preferences"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:DesktopGoogleReader.Properties"
+    Title="Preferences" Height="374" Width="516" WindowStyle="ToolWindow" Icon="/DesktopGoogleReader;component/Resources/images/preferences.png">
+    <Window.Resources>
+        <local:Settings x:Key="settings" />
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="#eee" />
+                <GradientStop Offset="1" Color="#ccc" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid DataContext="{StaticResource settings}" Height="322" Width="466">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="174*" />
+            <ColumnDefinition Width="201*" />
+        </Grid.ColumnDefinitions>
+        <Button Height="23" Margin="0,0,17,11" Name="buttonSave" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="74" Click="buttonSave_Click" Grid.Column="1">OK</Button>
+        <TabControl Margin="12,12.375,12,40" Name="tabControl1" Grid.ColumnSpan="2" Height="269.5" Width="442">
+            <TabItem Header="User interface" Name="userInterface">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <CheckBox Height="16" Margin="6,6,0,0" Name="checkBoxMinimizeToTray" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Checked="checkBoxMinimizeToTray_Checked" Unchecked="checkBoxMinimizeToTray_Unchecked">Minimize to tray</CheckBox>
+                    <Slider Height="28" IsSnapToTickEnabled="True" Margin="6,62,48,0" Maximum="60" Minimum="1" Name="sliderPollingInterval" ValueChanged="sliderPollingInterval_ValueChanged" Orientation="Horizontal" SmallChange="1" TickFrequency="1" TickPlacement="None" ToolTip="Automatic refresh interval in minutes" Value="3" VerticalAlignment="Top" />
+                    <Label Content="{Binding ElementName=sliderPollingInterval, Path=Value, Mode=OneWay}" Height="28" HorizontalAlignment="Right" Margin="0,62,6,0" Name="labelPollingInterval" VerticalAlignment="Top" Width="36" />
+                    <Label Height="28" Margin="6,28,6,0" Name="labelRefreshInterval" VerticalAlignment="Top">Automatic refresh interval in minutes</Label>
+                    <CheckBox Height="16" Margin="6,96,6,0" Name="checkBoxFullTextIfEmpty" VerticalAlignment="Top" Checked="checkBoxFullTextIfEmpty_Checked" Unchecked="checkBoxFullTextIfEmpty_Unchecked">Show linked page if summary is empty</CheckBox>
+                    <CheckBox Height="16" Margin="6,118,6,0" Name="checkBoxFullTextIfTitle" VerticalAlignment="Top" Checked="checkBoxFullTextIfTitle_Checked" Unchecked="checkBoxFullTextIfTitle_Unchecked">Show linked page if summary is same as title</CheckBox>
+                    <CheckBox Height="16" Margin="6,140,6,0" Name="checkBoxAlwaysShowFullText" VerticalAlignment="Top" Checked="checkBoxAlwaysShowFullText_Checked" Unchecked="checkBoxAlwaysShowFullText_Unchecked">Always show linked page instead of summary</CheckBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Notifications" Name="notifications">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <CheckBox Height="16" Margin="6,6,6,0" Name="checkBoxNotificationsEnabled" VerticalAlignment="Top" Checked="checkBoxNotificationsEnabled_Checked" Unchecked="checkBoxNotificationsEnabled_Unchecked">Notifications enabled</CheckBox>
+                    <Slider Height="29" x:Name="sliderNotificationLength" Maximum="1000" Minimum="20" ToolTip="Maximum length of text to be displayed in a notification" 
+                    Value="150" TickFrequency="1" SmallChange="1" TickPlacement="None" IsSnapToTickEnabled="True" Margin="6,62,48,0" VerticalAlignment="Top" ValueChanged="sliderNotificationLength_ValueChanged" />
+                <Label Height="28" Name="labelNotificationLength" Width="36" Content="{Binding ElementName=sliderNotificationLength, Path=Value, Mode=OneWay}" HorizontalAlignment="Right" Margin="0,62,6,0" VerticalAlignment="Top"></Label>
+                    <Label Height="28" Margin="6,28,6,0" Name="label1" VerticalAlignment="Top">Max. length of text displayed in notification</Label>
+                    <ComboBox Margin="129,97,30,118" Name="comboBox_notificationTitle"
+                        SelectedValue="{Binding Path=Default.notificationTitle}" 
+                        SelectedValuePath="Content">
+                        <ComboBoxItem>Feed name</ComboBoxItem>
+                        <ComboBoxItem>Feed item title</ComboBoxItem>
+                    </ComboBox>
+                    <Label HorizontalAlignment="Left" Margin="6,97,0,0" Name="label2" Width="117" Height="27.55" VerticalAlignment="Top">Title of notification</Label>
+                    <Label Height="28" HorizontalAlignment="Left" Margin="6,125.55,0,0" Name="label3" VerticalAlignment="Top" Width="117">Text of notification</Label>
+                    <ComboBox Margin="129,0,30,89" Name="comboBox_notificationText" SelectedValue="{Binding Path=Default.notificationText}" 
+                        SelectedValuePath="Content" Height="23" VerticalAlignment="Bottom">
+                        <ComboBoxItem>Feed item title and content</ComboBoxItem>
+                        <ComboBoxItem>Feed item content</ComboBoxItem>                        
+                        <ComboBoxItem>Feed item title</ComboBoxItem>
+                        <ComboBoxItem>Feed name</ComboBoxItem>
+                        <ComboBoxItem>Nothing</ComboBoxItem>
+                    </ComboBox>
+                    <CheckBox Height="20" Margin="14,159,48,0" Name="checkBox_useAttachedIcon" 
+                              VerticalAlignment="Top" 
+                              IsChecked="{Binding Path=Default.notificationUseAttachmentIcon,Mode=TwoWay}"
+                              ToolTip="Some feeds attach images as separat content to the items. Those can be used in the notiication">
+                        Use attached icons in notifications
+                    </CheckBox>
+                    <CheckBox Height="16" 
+                              Margin="14,177,48,0" 
+                              Name="checkBox_useContentIcon" 
+                              IsChecked="{Binding Path=Default.notificationUseContentIcon,Mode=TwoWay}"
+                              VerticalAlignment="Top" ToolTip="Trys to get an image out of the content of the notification. Might get wrong / not useful icons in notifications">Parse content and use first found image in notification</CheckBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Network" Name="network">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <CheckBox Name="checkBoxEnableProxy" Margin="6,6,6,183.18" Checked="checkBoxEnableProxy_Checked" Unchecked="checkBoxEnableProxy_Unchecked" >Use custom proxy server</CheckBox>
+                    <Label Margin="18,28,0,0" Name="labelProxyHost" Height="28.37" HorizontalAlignment="Left" VerticalAlignment="Top" Width="52">Server</Label>
+                    <TextBox Height="23" Margin="76,28,69,0" Name="textBoxProxyServerHost" VerticalAlignment="Top" IsEnabled="False" TextChanged="textBoxProxyServerHost_TextChanged" />
+                    <Label Margin="18,57,0,0" Name="labelProxyPort" HorizontalAlignment="Left" Width="52" Height="31" VerticalAlignment="Top">Port</Label>
+                    <TextBox Margin="76,57,0,0" Name="textBoxProxyPort" IsEnabled="False" TextChanged="textBoxProxyPort_TextChanged" HorizontalAlignment="Left" Width="51" Height="23" VerticalAlignment="Top" />
+                    <Label Margin="62,86,0,0" Name="labelProxyUser" HorizontalAlignment="Left" Width="50" Height="28.04" VerticalAlignment="Top">User</Label>
+                    <TextBox Margin="133,86,27,0" Name="textBoxProxyUser" IsEnabled="False" TextChanged="textBoxProxyUser_TextChanged" Height="23.04" VerticalAlignment="Top" />
+                    <Label Height="28" Margin="62,110,246,0" Name="labelProxyPassword" VerticalAlignment="Top">Password</Label>
+                    <PasswordBox Height="23" Margin="133,115,27,0" Name="passwordBoxProxy" VerticalAlignment="Top" IsEnabled="False" PasswordChanged="passwordBoxProxy_PasswordChanged" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="General" Name="general">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="68*" />
+                        <ColumnDefinition Width="305*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <CheckBox Height="16" Margin="23,28,6,0" IsChecked="{Binding Path=Default.useAutomaticUpdateBeta,Mode=TwoWay}" Name="checkBoxCheckForBetaUpdates" VerticalAlignment="Top" IsEnabled="True" Grid.ColumnSpan="2">Include beta version in update checks</CheckBox>
+                    <CheckBox Height="16" Margin="6,6,6,0" Name="checkBoxCheckForUpdates" VerticalAlignment="Top" IsChecked="True" IsEnabled="True" Checked="checkBoxCheckForUpdates_Checked" Unchecked="checkBoxCheckForUpdates_Unchecked" Grid.ColumnSpan="2">Automatically check for updates on startup</CheckBox>
+                    
+                    <Button Height="23" HorizontalAlignment="Left" Margin="23,50,0,0" Name="buttonCheckNowForUpdate" VerticalAlignment="Top" Width="75" Click="buttonCheckNowForUpdate_Click" Grid.ColumnSpan="2">Check now</Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="External services" Name="externalServices">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="68*" />
+                        <ColumnDefinition Width="305*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+                            <LinearGradientBrush.GradientStops>
+                                <GradientStop Offset="0" Color="#eee" />
+                                <GradientStop Offset="1" Color="#ccc" />
+                            </LinearGradientBrush.GradientStops>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Label HorizontalAlignment="Left" Margin="6,37,0,0" Name="label4" Width="120" Grid.ColumnSpan="2" Height="28.05" VerticalAlignment="Top" FlowDirection="RightToLeft">Read it Later</Label>
+                    <Label Margin="0,0,22.244,29" Name="label5" FlowDirection="LeftToRight" Grid.Column="1" Height="28.54" VerticalAlignment="Bottom">Twitter: Your credentials will be asked for upon first access</Label>
+                    <Label Grid.Column="1" Height="28" Margin="53,6,0,0" Name="label6" VerticalAlignment="Top" HorizontalAlignment="Left" Width="91">Username</Label>
+                    <TextBox Grid.Column="1" 
+                             Height="23" 
+                             Margin="53,37,0,0" 
+                             Name="textBox_RILusername" 
+                             VerticalAlignment="Top" 
+                             HorizontalAlignment="Left" 
+                             Width="91"
+                             Text="{Binding Path=Default.RILusername,Mode=TwoWay}"
+                             />
+                    <Label Grid.Column="1" Height="28" Margin="150,6,0,0" Name="label7" VerticalAlignment="Top" HorizontalAlignment="Left" Width="91.244">Password</Label>
+                    <PasswordBox Grid.Column="1" Height="23" Margin="150,37,0,0" Name="passwordBox_RILpassword" VerticalAlignment="Top" HorizontalAlignment="Left" Width="91.244" PasswordChanged="passwordBox_RILpassword_PasswordChanged" />
+                    <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="257,37.225,0,0" Name="button_RILTest" VerticalAlignment="Top" Width="74" Click="button_RILTest_Click">Test</Button>
+                    <Label Grid.ColumnSpan="2" Height="28" HorizontalAlignment="Left" Margin="6,66,0,0" Name="label_instapaper" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right">Instapaper</Label>
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding Path=Default.Instapaper_username,Mode=TwoWay}"
+                             Margin="53,66,0,0" Name="textBox_instapaperUsername" Height="22.54" HorizontalAlignment="Left" VerticalAlignment="Top" Width="91" />
+                    <Button Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="257,66,0,0" Name="button_testLoginInstapaper" VerticalAlignment="Top" Width="75" Click="button_testLoginInstapaper_Click">Test</Button>
+                    <PasswordBox PasswordChanged="passwordBox_instapaperPassword_PasswordChanged" Grid.Column="1" Height="23" Margin="150,66,0,0" Name="passwordBox_instapaperPassword" VerticalAlignment="Top" HorizontalAlignment="Left" Width="91.244" />
+                    <Label Grid.ColumnSpan="2" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="6,92,0,0" Name="label8" Width="120" Height="27.54" VerticalAlignment="Top">del.icio.us</Label>
+                    <TextBox Height="22.54" HorizontalAlignment="Left" Margin="53,94,0,0" Name="textBoxDeliciousUser" Text="{Binding Path=Default.deliciousUser, Mode=TwoWay}" VerticalAlignment="Top" Width="91" Grid.Column="1" />
+                    <PasswordBox Height="23" Margin="150,95,0,0" Name="passwordBoxDeliciousPassword" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="91.244" PasswordChanged="passwordBoxDeliciousPassword_PasswordChanged" />
+                    <Label FlowDirection="LeftToRight" Height="28.54" Margin="0,0,22.244,6" Name="label9" VerticalAlignment="Bottom" Grid.Column="1">Facebook: Your credentials will be asked for upon access</Label>
+                    <Label Grid.ColumnSpan="2" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="5,119,0,0" Name="label10" Width="120" Height="27.54" VerticalAlignment="Top">Posterous</Label>
+                    <TextBox Height="22.54" HorizontalAlignment="Left" Margin="53,122,0,0" Name="textBoxPosterousUser" Text="{Binding Path=Default.posterousUser, Mode=TwoWay}" VerticalAlignment="Top" Width="91" Grid.Column="1" />
+                    <PasswordBox Height="23" Margin="150,122.54,0,0" Name="passwordBoxPosterousPassword" VerticalAlignment="Top" Grid.Column="1" PasswordChanged="passwordBoxPosterousPassword_PasswordChanged" HorizontalAlignment="Left" Width="91.244" />
+                    <Label Grid.ColumnSpan="2" Height="27.54" HorizontalAlignment="Left" HorizontalContentAlignment="Right" Margin="6,146,0,0" Name="label11" VerticalAlignment="Top" Width="120">Diigo</Label>
+                    <TextBox Height="22.54" HorizontalAlignment="Left" Margin="53,151,0,0" Name="textBoxDiigoUser" Text="{Binding Path=Default.diigoUser, Mode=TwoWay}" VerticalAlignment="Top" Width="91" Grid.Column="1" />
+                    <PasswordBox Height="23" Margin="150,151.54,0,0" Name="passwordBoxDiigoPassword" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="91.244" PasswordChanged="passwordBoxDiigoPassword_PasswordChanged" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

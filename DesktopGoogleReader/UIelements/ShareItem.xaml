@@ -1,0 +1,22 @@
+﻿<Window x:Class="DesktopGoogleReader.UIelements.ShareItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Share this item" Height="208" Width="300" Icon="/DesktopGoogleReader;component/Resources/images/share.png">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.5">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="#eee" />
+                <GradientStop Offset="1" Color="#ccc" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Label Margin="12,12,12,0" Name="label1" HorizontalContentAlignment="Center" Height="28" VerticalAlignment="Top">Share this feed item:</Label>
+        <Button Height="23" Margin="12,136,0,0" Name="button_yes" VerticalAlignment="Top" Click="button_yes_Click" HorizontalAlignment="Left" Width="133">Share now</Button>
+        <Label Height="28" Margin="12,29,12,0" Name="label_itemTitle" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold">Item title</Label>
+        <Label Height="28" Margin="12,46,12,0" Name="label_feedName" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold">Feed name</Label>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,136,12,0" Name="button_cancel" VerticalAlignment="Top" Width="75" Click="buttonCancel_Click">Cancel</Button>
+        <TextBox Height="59" Margin="12,71,12,0" Name="textBox_comment" VerticalAlignment="Top" ToolTip="Sharing comment (optional)" />
+        <Image Name="image1" Stretch="Fill" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Width="24" Source="/DesktopGoogleReader;component/Resources/images/share.png" Margin="12,12,0,0" />
+    </Grid>
+</Window>
